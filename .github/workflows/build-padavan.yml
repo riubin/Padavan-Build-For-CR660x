@@ -77,7 +77,7 @@ jobs:
         ######################################################################
         echo "CONFIG_FIRMWARE_INCLUDE_TCPUMP=n" >> configs/templates/$TNAME.config # 删除用于抓包的 tcpdump
         echo "CONFIG_FIRMWARE_INCLUDE_EAP_PEAP=n" >> configs/templates/$TNAME.config # 删除 EAP-TTLS 和 EAP-PEAP 身份验证支持
-        echo "CONFIG_FIRMWARE_INCLUDE_SFTP=n" >> configs/templates/$TNAME.config # 删除 SFTP
+        echo "CONFIG_FIRMWARE_INCLUDE_SFTP=y" >> configs/templates/$TNAME.config # 保留 SFTP
         echo "CONFIG_FIRMWARE_INCLUDE_OPENSSH=n" >> configs/templates/$TNAME.config # 删除 OpenSSH
         echo "CONFIG_FIRMWARE_INCLUDE_OPENVPN=n" >> configs/templates/$TNAME.config # 删除OPENVPN
         echo "CONFIG_FIRMWARE_INCLUDE_OPENSSL_EC=n" >> configs/templates/$TNAME.config # 删除椭圆曲线（EC）
