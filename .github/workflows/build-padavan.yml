@@ -57,6 +57,8 @@ jobs:
         sed -i '/CONFIG_FIRMWARE_INCLUDE_TCPUMP/d' configs/templates/$TNAME.config # 用于抓包的 tcpdump
         sed -i '/CONFIG_FIRMWARE_INCLUDE_EAP_PEAP/d' configs/templates/$TNAME.config # EAP-TTLS 和 EAP-PEAP 身份验证支持
         sed -i '/CONFIG_FIRMWARE_INCLUDE_SFTP/d' configs/templates/$TNAME.config # SFTP
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_FRPS/d' configs/templates/$TNAME.config # FRPS
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_FRPC/d' configs/templates/$TNAME.config # FRPC
         sed -i '/CONFIG_FIRMWARE_INCLUDE_OPENSSH/d' configs/templates/$TNAME.config # OpenSSH
         sed -i '/CONFIG_FIRMWARE_INCLUDE_OPENVPN/d' configs/templates/$TNAME.config # OPENVPN
         sed -i '/CONFIG_FIRMWARE_INCLUDE_OPENSSL_EC/d' configs/templates/$TNAME.config # 椭圆曲线（EC）
@@ -80,6 +82,7 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_EAP_PEAP=n" >> configs/templates/$TNAME.config # 删除 EAP-TTLS 和 EAP-PEAP 身份验证支持
         echo "CONFIG_FIRMWARE_INCLUDE_SFTP=y" >> configs/templates/$TNAME.config # 保留 SFTP
         echo "CONFIG_FIRMWARE_INCLUDE_FRPS=y" >> configs/templates/$TNAME.config # 保留 FRPS
+        echo "CONFIG_FIRMWARE_INCLUDE_FRPC=n" >> configs/templates/$TNAME.config # 删除 FRPC
         echo "CONFIG_FIRMWARE_INCLUDE_OPENSSH=n" >> configs/templates/$TNAME.config # 删除 OpenSSH
         echo "CONFIG_FIRMWARE_INCLUDE_OPENVPN=n" >> configs/templates/$TNAME.config # 删除OPENVPN
         echo "CONFIG_FIRMWARE_INCLUDE_OPENSSL_EC=n" >> configs/templates/$TNAME.config # 删除椭圆曲线（EC）
