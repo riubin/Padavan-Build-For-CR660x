@@ -49,7 +49,8 @@ jobs:
         if [ ! -f configs/templates/$TNAME.config ] ; then
         echo "configs/templates/$TNAME.config not found "
         exit 1
-        fi
+        fi        
+        sed -i 's/FRP_VER := 0.29.0/FRP_VER := 0.68.0/' user/frp/Makefile # 修改 frp 的版本号
         ################################################################################################
         # 因不同型号配置功能不一样，所以先把配置项删除，如果你自己要添加其他的，也要写上删除这一条，切记！！！
         ################################################################################################
@@ -78,6 +79,7 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_TCPUMP=n" >> configs/templates/$TNAME.config # 删除用于抓包的 tcpdump
         echo "CONFIG_FIRMWARE_INCLUDE_EAP_PEAP=n" >> configs/templates/$TNAME.config # 删除 EAP-TTLS 和 EAP-PEAP 身份验证支持
         echo "CONFIG_FIRMWARE_INCLUDE_SFTP=y" >> configs/templates/$TNAME.config # 保留 SFTP
+        echo "CONFIG_FIRMWARE_INCLUDE_FRPS=y" >> configs/templates/$TNAME.config # 保留 FRPS
         echo "CONFIG_FIRMWARE_INCLUDE_OPENSSH=n" >> configs/templates/$TNAME.config # 删除 OpenSSH
         echo "CONFIG_FIRMWARE_INCLUDE_OPENVPN=n" >> configs/templates/$TNAME.config # 删除OPENVPN
         echo "CONFIG_FIRMWARE_INCLUDE_OPENSSL_EC=n" >> configs/templates/$TNAME.config # 删除椭圆曲线（EC）
