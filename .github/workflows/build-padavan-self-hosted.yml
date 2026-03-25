@@ -27,7 +27,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |                         # 安装依赖包
         sudo apt-get update
-        sudo apt-get -y install unzip libtool-bin curl cmake gperf gawk flex bison nano xxd fakeroot kmod cpio git python3-docutils gettext automake autopoint texinfo build-essential help2man pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev ibltdl-dev wget libc-dev-bin
+        sudo apt-get -y install unzip libtool-bin curl cmake gperf gawk flex bison nano xxd fakeroot kmod cpio git python3-docutils gettext automake autopoint texinfo build-essential help2man pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev wget libc-dev-bin
         sudo timedatectl set-timezone 'Asia/Shanghai'  # 设置时区
     - name: Clone source code
       run: |                         # 克隆源码
