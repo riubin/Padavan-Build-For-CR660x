@@ -27,7 +27,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |                         # 安装依赖包
         sudo apt-get update
-        sudo apt-get -y install libtool-bin gperf python3-docutils autopoint gettext
+        sudo apt-get -y install unzip libtool-bin curl cmake gperf gawk flex bison nano xxd fakeroot kmod cpio git python3-docutils gettext automake autopoint texinfo build-essential help2man pkg-config zlib1g-dev libgmp3-dev libmpc-dev libmpfr-dev libncurses5-dev ibltdl-dev wget libc-dev-bin
         sudo timedatectl set-timezone 'Asia/Shanghai'  # 设置时区
     - name: Clone source code
       run: |                         # 克隆源码
@@ -55,14 +55,9 @@ jobs:
         # 因不同型号配置功能不一样，所以先把配置项删除，如果你自己要添加其他的，也要写上删除这一条，切记！！！
         ################################################################################################
         sed -i '/CONFIG_FIRMWARE_INCLUDE_TCPUMP/d' configs/templates/$TNAME.config # 用于抓包的 tcpdump
-        sed -i '/CONFIG_FIRMWARE_INCLUDE_EAP_PEAP/d' configs/templates/$TNAME.config # EAP-TTLS 和 EAP-PEAP 身份验证支持
-        sed -i '/CONFIG_FIRMWARE_INCLUDE_SFTP/d' configs/templates/$TNAME.config # SFTP
         sed -i '/CONFIG_FIRMWARE_INCLUDE_FRPS/d' configs/templates/$TNAME.config # FRPS
         sed -i '/CONFIG_FIRMWARE_INCLUDE_FRPC/d' configs/templates/$TNAME.config # FRPC
-        sed -i '/CONFIG_FIRMWARE_INCLUDE_OPENSSH/d' configs/templates/$TNAME.config # OpenSSH
-        sed -i '/CONFIG_FIRMWARE_INCLUDE_OPENVPN/d' configs/templates/$TNAME.config # OPENVPN
-        sed -i '/CONFIG_FIRMWARE_INCLUDE_OPENSSL_EC/d' configs/templates/$TNAME.config # 椭圆曲线（EC）
-        sed -i '/CONFIG_FIRMWARE_INCLUDE_OPENSSL_EXE/d' configs/templates/$TNAME.config # OpenSSL
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_OPENVPN/d' configs/templates/$TNAME.config # OPENVPN        
         sed -i '/CONFIG_FIRMWARE_INCLUDE_XUPNPD/d' configs/templates/$TNAME.config # 用于IPTV的XUPNPD
         sed -i '/CONFIG_FIRMWARE_INCLUDE_FFMPEG_NEW/d' configs/templates/$TNAME.config # ffmpeg
         sed -i '/CONFIG_FIRMWARE_INCLUDE_CURL/d' configs/templates/$TNAME.config # CURL
@@ -75,18 +70,14 @@ jobs:
         sed -i '/CONFIG_FIRMWARE_INCLUDE_IPERF3/d' configs/templates/$TNAME.config # IPERF3
         sed -i '/CONFIG_FIRMWARE_INCLUDE_MTR/d' configs/templates/$TNAME.config # MTR
         sed -i '/CONFIG_FIRMWARE_INCLUDE_SOCAT/d' configs/templates/$TNAME.config # SOCAT
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_SMBD36/d' configs/templates/$TNAME.config # SMBD36
         ######################################################################
         # 以下选项是定义你需要的功能（y=集成,n=忽略），重新写入到.config文件
         ######################################################################
         echo "CONFIG_FIRMWARE_INCLUDE_TCPUMP=n" >> configs/templates/$TNAME.config # 删除用于抓包的 tcpdump
-        echo "CONFIG_FIRMWARE_INCLUDE_EAP_PEAP=n" >> configs/templates/$TNAME.config # 删除 EAP-TTLS 和 EAP-PEAP 身份验证支持
-        echo "CONFIG_FIRMWARE_INCLUDE_SFTP=y" >> configs/templates/$TNAME.config # 保留 SFTP
         echo "CONFIG_FIRMWARE_INCLUDE_FRPS=y" >> configs/templates/$TNAME.config # 保留 FRPS
         echo "CONFIG_FIRMWARE_INCLUDE_FRPC=n" >> configs/templates/$TNAME.config # 删除 FRPC
-        echo "CONFIG_FIRMWARE_INCLUDE_OPENSSH=n" >> configs/templates/$TNAME.config # 删除 OpenSSH
         echo "CONFIG_FIRMWARE_INCLUDE_OPENVPN=n" >> configs/templates/$TNAME.config # 删除OPENVPN
-        echo "CONFIG_FIRMWARE_INCLUDE_OPENSSL_EC=n" >> configs/templates/$TNAME.config # 删除椭圆曲线（EC）
-        echo "CONFIG_FIRMWARE_INCLUDE_OPENSSL_EXE=n" >> configs/templates/$TNAME.config # 删除 OpenSSL
         echo "CONFIG_FIRMWARE_INCLUDE_XUPNPD=n" >> configs/templates/$TNAME.config # 删除用于IPTV的XUPNPD
         echo "CONFIG_FIRMWARE_INCLUDE_FFMPEG_NEW=n" >> configs/templates/$TNAME.config # 删除 ffmpeg
         echo "CONFIG_FIRMWARE_INCLUDE_CURL=n" >> configs/templates/$TNAME.config # 删除 CURL
@@ -99,17 +90,10 @@ jobs:
         echo "CONFIG_FIRMWARE_INCLUDE_IPERF3=n" >> configs/templates/$TNAME.config # IPERF3
         echo "CONFIG_FIRMWARE_INCLUDE_MTR=n" >> configs/templates/$TNAME.config # MTR
         echo "CONFIG_FIRMWARE_INCLUDE_SOCAT=n" >> configs/templates/$TNAME.config # SOCAT
+        echo "CONFIG_FIRMWARE_INCLUDE_SMBD36=n" >> configs/templates/$TNAME.config # SMBD36
         # 如果 /opt/rt-n56u/trunk 目录中不存在 .config 文件，先执行清理脚本 ./clear_tree，后编译的话，执行清理时会报错
         # Project config file .config not found! Terminate.
         #cp -f configs/templates/$TNAME.config .config
-        # 修改默认默认网关
-        sed -i 's/192.168.2.1/192.168.123.1/g' user/shared/defaults.h
-        sed -i 's/192.168.2.100/192.168.123.100/g' user/shared/defaults.h
-        sed -i 's/192.168.2.244/192.168.123.244/g' user/shared/defaults.h
-        # 修改后台地址中的相关192.168.2.1 
-        sed -i 's/192.168.2.1/192.168.123.1/g' user/www/n56u_ribbon_fixed/Restarting.asp
-        sed -i 's/192.168.2.1/192.168.123.1/g' user/www/dict/EN.footer
-        sed -i 's/192.168.2.1/192.168.123.1/g' user/www/dict/CN.dict
         # 编译
         sudo ./build_firmware_ci $TNAME
         sudo mv -f images/*.trx /opt/images/
